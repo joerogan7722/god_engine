@@ -1,101 +1,99 @@
-"""
-Manages the definition, tracking, and selection of self-improvement goals for the God Engine.
-"""
+# goal_manager.py
 import json
-import os
-from god_engine.system_monitor import SystemMonitor
+from pathlib import Path
+from typing import List, Optional
+
 
 class Goal:
-    """
-    Represents a self-improvement goal with its definition and criteria.
-    """
-    def __init__(self, name, description, target_file, patch_logic, completion_criteria, priority=1, effort=1):
-        self.name = name
+    def __init__(
+        self,
+        id: str,
+        description: str,
+        impact: float,
+        effort: float,
+        name: str = "",
+        target_file: str = "",
+        completion_criteria: str = "",
+        patch_logic: str = "",
+    ):
+        self.id = id
         self.description = description
+        self.impact = impact       # estimated capability/autonomy gain
+        self.effort = effort       # relative cost
+        self.status = "pending"    # or "in_progress", "done"
+        self.name = name
         self.target_file = target_file
+        self.completion_criteria = completion_criteria
         self.patch_logic = patch_logic
-        self.completion_criteria = completion_criteria # A string or callable to evaluate success
-        self.priority = priority
-        self.effort = effort
-        self.score = self.priority / self.effort if self.effort > 0 else self.priority
+
+    @property
+    def score(self):
+        # Higher = more attractive (impact per effort)
+        return self.impact / max(self.effort, 0.1)
+
 
 class GoalManager:
-    """
-    Loads, tracks, and provides access to defined self-improvement goals.
-    """
-    def __init__(self, goals_config_path, system_monitor, protected_modules=None):
-        self.goals_config_path = goals_config_path
-        self.protected_modules = protected_modules if protected_modules is not None else set()
-        self.system_monitor = system_monitor
-        self.available_goals = {} # {goal_name: Goal object}
-        self._load_goals_config()
+    def __init__(self, path: str = "goals.json"):
+        self.file = Path(path)
+        self.goals: List[Goal] = self._load()
 
-    def _load_goals_config(self):
-        """Loads goals from a JSON configuration file."""
-        if not os.path.exists(self.goals_config_path):
-            print(f"Warning: Goals configuration file not found at {self.goals_config_path}. No goals loaded.")
-            return
+    def _load(self) -> List[Goal]:
+        if self.file.exists():
+            data = json.loads(self.file.read_text())
+            goals = []
+            if isinstance(data, list):  # Handle case where goals.json is a list
+                for item in data:
+                    if isinstance(item, dict) and "id" in item and "description" in item:
+                        valid_args = {
+                            k: v for k, v in item.items()
+                            if k in [
+                                "description", "impact", "effort", "name",
+                                "target_file", "completion_criteria", "patch_logic"
+                            ]
+                        }
+                        if "impact" not in valid_args:
+                            valid_args["impact"] = 1.0
+                        if "effort" not in valid_args:
+                            valid_args["effort"] = 1.0
+                        goals.append(Goal(id=item["id"], **valid_args))
+            elif isinstance(data, dict):  # Handle case where goals.json is a dict (old format)
+                for goal_id, goal_data in data.items():
+                    if isinstance(goal_data, dict) and "description" in goal_data:
+                        valid_args = {
+                            k: v for k, v in goal_data.items()
+                            if k in [
+                                "description", "impact", "effort", "name",
+                                "target_file", "completion_criteria", "patch_logic"
+                            ]
+                        }
+                        if "impact" not in valid_args:
+                            valid_args["impact"] = 1.0
+                        if "effort" not in valid_args:
+                            valid_args["effort"] = 1.0
+                        goals.append(Goal(id=goal_id, **valid_args))
+            return goals
+        return []
 
-        with open(self.goals_config_path, "r", encoding="utf-8") as f:
-            goals_data = json.load(f)
-        
-        for goal_name, data in goals_data.items():
-            self.available_goals[goal_name] = Goal(
-                name=goal_name,
-                description=data.get("description", ""),
-                target_file=data.get("target_file"),
-                patch_logic=data.get("patch_logic"),
-                completion_criteria=data.get("completion_criteria"),
-                priority=data.get("priority", 1),
-                effort=data.get("effort", 1)
-            )
-        print(f"Loaded {len(self.available_goals)} goals from {self.goals_config_path}.")
+    def save(self):
+        data = [g.__dict__ for g in self.goals]
+        self.file.write_text(json.dumps(data, indent=2))
 
-    def get_goal(self, goal_name):
-        """Returns a specific Goal object by name."""
-        return self.available_goals.get(goal_name)
+    def add_goal(self, goal: Goal):
+        self.goals.append(goal)
+        self.save()
 
-    def get_next_pending_goal(self, completed_goals, code_root):
-        """
-        Determines the next goal to pursue based on a dynamic scoring algorithm.
-        The score is adjusted based on real-time data from the SystemMonitor.
-        """
-        pending_goals = [goal for name, goal in self.available_goals.items() if name not in completed_goals]
-
-        if not pending_goals:
-            return None
-
-        # Get current system metrics
-        error_rates = self.system_monitor.get_error_rates()
-        bottlenecks = dict(self.system_monitor.get_performance_bottlenecks())
-
-        # Dynamically adjust scores
-        for goal in pending_goals:
-            dynamic_priority = goal.priority
-            
-            # Increase priority for goals targeting error-prone modules
-            target_module = os.path.basename(goal.target_file)
-            if target_module in error_rates:
-                error_bonus = error_rates[target_module] * 2 # Bonus for each error
-                dynamic_priority += error_bonus
-                print(f"Goal '{goal.name}' priority boosted by {error_bonus} due to errors in {target_module}.")
-
-            # Increase priority for goals that optimize bottlenecks
-            # (This is a simple heuristic; could be more sophisticated)
-            if "optimize" in goal.name.lower() and goal.target_file in str(bottlenecks):
-                 dynamic_priority += 5 # Flat bonus for targeting an optimization
-                 print(f"Goal '{goal.name}' priority boosted for targeting a performance bottleneck.")
-
-            goal.score = dynamic_priority / goal.effort if goal.effort > 0 else dynamic_priority
-
-        pending_goals.sort(key=lambda g: g.score, reverse=True)
-
-        for goal in pending_goals:
-            target_file_path = os.path.abspath(os.path.join(code_root, goal.target_file))
-            if os.path.exists(target_file_path):
-                print(f"Selected highest-scoring goal: '{goal.name}' (Score: {goal.score:.2f})")
-                return goal
-            else:
-                print(f"Warning: Target file for goal '{goal.name}' not found at {target_file_path}. Skipping.")
-
+    def next_goal(self) -> Optional[Goal]:
+        pending = [g for g in self.goals if g.status == "pending"]
+        pending.sort(key=lambda g: g.score, reverse=True)
+        if pending:
+            g = pending[0]
+            g.status = "in_progress"
+            self.save()
+            return g
         return None
+
+    def mark_done(self, goal_id: str):
+        for g in self.goals:
+            if g.id == goal_id:
+                g.status = "done"
+        self.save()
