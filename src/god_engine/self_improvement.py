@@ -10,8 +10,8 @@ except ImportError:
 
 from vertexai.preview.generative_models import GenerativeModel
 
-from god_engine.goal_manager import Goal, GoalManager
-from god_engine.problem_identification import ProblemIdentificationModule # Corrected import
+from god_engine.goal_manager import GoalManager
+from god_engine.problem_identification import generate_goals_from_todos
 
 
 class SelfImprovementModule:
@@ -27,14 +27,11 @@ class SelfImprovementModule:
         self.max_cycles = cfg["max_cycles"]
         # Init goal manager
         self.goals = GoalManager(cfg.get("goals_path", "goals.json"))
-        # Initialize ProblemIdentificationModule
-        self.problem_identifier = ProblemIdentificationModule(
-            code_root=str(self.code_dir),
-            goals_config_path=cfg.get("goals_path", "goals.json"),
-            system_monitor=None # Assuming SystemMonitor is not strictly needed for basic goal generation
-        )
         # Bootstrap any new TODOs as goals by analyzing the codebase
-        self.problem_identifier.analyze_codebase() # This will populate goals.json
+        new_goals = generate_goals_from_todos(str(self.code_dir))
+        for goal_data in new_goals:
+            if not any(g.id == goal_data["id"] for g in self.goals.goals):
+                self.goals.add_goal_from_dict(goal_data)
         
         # Gemini client setup
         if vertex_ai:
@@ -54,23 +51,20 @@ class SelfImprovementModule:
 
     def _call_gemini(self, prompt: str) -> str:
         """
-        Mocks sending a feature-driven request to Gemini and returns a predefined diff patch.
+        Send a feature-driven request to Gemini and return the unified-diff patch.
         """
-        print(f"MOCKING GEMINI API CALL for prompt:\n{prompt}")
-        # Predefined patch to add a logging line to the greet function
-        # This patch assumes the original greet function is present as expected
-        return """--- a/src/god_engine/utils.py
-+++ b/src/god_engine/utils.py
-@@ -165,6 +165,8 @@
-     \"\"\"
-     A simple greeting function added by the Self-Improvement Module.
-     # TODO[REF-123]: Add logging to this function.
-+    import logging
-+    logging.basicConfig(level=logging.INFO)
-     \"\"\"
-     return (
-         f"Hello, {name}! This function was added by the God Engine's "
-"""
+        if not self.model:
+            return ""
+        # Ensure your GEMINI_API_KEY is set in the env
+        response = self.model.generate_content(prompt)
+        # Gemini returns a list of predictions; we expect one unified diff
+        content = response.text
+        # Some trimming/hygiene: ensure it starts with diff header
+        if not content.startswith("diff") and "+++" in content:
+            # try to locate first '+++'
+            idx = content.find("+++")
+            content = content[idx:]
+        return content
 
     def improve(self):
         for _ in range(self.max_cycles):
@@ -117,10 +111,10 @@ class SelfImprovementModule:
             subprocess.run(
                 ["git", "apply", str(patch_file_path)],
                 check=True,
-                cwd=".", # Execute from the current working directory (project root)
+                cwd=".",  # Execute from the current working directory (project root)
                 capture_output=True,
             )
-            patch_file_path.unlink() # Delete the temporary patch file
+            patch_file_path.unlink()  # Delete the temporary patch file
             return True
         except (subprocess.CalledProcessError, FileNotFoundError) as e:
             print(f"Error applying patch: {e}")
@@ -132,7 +126,7 @@ class SelfImprovementModule:
         """Runs the test suite."""
         try:
             subprocess.run(
-                ["pytest"], check=True, cwd=self.code_dir, capture_output=True
+                ["pytest"], check=True, cwd=".", capture_output=True
             )
             return True
         except subprocess.CalledProcessError as e:
@@ -146,7 +140,7 @@ class SelfImprovementModule:
             subprocess.run(
                 ["git", "reset", "--hard"],
                 check=True,
-                cwd=self.code_dir,
+                cwd=".",
                 capture_output=True,
             )
         except subprocess.CalledProcessError as e:

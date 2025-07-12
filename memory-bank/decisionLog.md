@@ -101,4 +101,18 @@ Related Decisions:
 - Definition of 'Improvement' for God Engine
 - Dynamic Goal Management Strategy (Capability & Autonomy Focused)
 
+## 2025-07-12 Cycle 1 Initialization
+
+**Decision:** Pivot goal discovery from Pylint to TODO-driven feature extraction  
+**Rationale:** User’s strategic focus is on autonomy and capability expansion, not style fixes.  
+**Actions Taken:**
+1. Updated `problem_identification.py` to scan for `TODO[id]: …` across `.py` files.
+2. Wrapped extracted TODOs into structured goals for the `GoalManager`.
+3. Adjusted unit tests to assert TODO parsing works.
+
+**Next Steps:**  
+- Implement real Gemini calls in `self_improvement.py`.  
+- Verify `GoalManager.next_goal()` now returns TODO-based goals.  
+- Run a dry‐run of `python engine.py` to ensure no regressions.
+
 ## Pending Decisions
