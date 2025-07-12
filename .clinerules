@@ -1,0 +1,50 @@
+# Memory Bank Integration Protocol
+
+This protocol outlines the essential guidelines for interacting with the Memory Bank, ensuring comprehensive context, consistent project state, and effective task execution within the `god_engine` project. Adherence to these rules is critical for maintaining operational integrity and efficiency.
+
+## Pre-Task/Pre-Response Protocol:
+Before initiating any task or formulating a response, always perform the following checks to establish complete context:
+
+1.  **Consult Active Context (`memory://active/context`):**
+    *   Review current project state, operational mode, and ongoing tasks.
+    *   Identify recent decisions, updates, and any open questions or concerns.
+
+2.  **Review Project Context (`memory://project/context`):**
+    *   Understand the technical stack, project guidelines, and architectural principles.
+    *   Familiarize yourself with the established development workflow.
+
+3.  **Examine Decision Log (`memory://decisions`):**
+    *   Access records of previous architectural choices and established patterns.
+    *   Understand technical rationales and relationships between decisions.
+
+4.  **Check Progress Tracking (`memory://progress`):**
+    *   Ascertain the current project phase, milestones, and completed work.
+    *   Identify tasks in progress and any known blockers.
+
+## Post-Task Protocol:
+Upon completion of every task, meticulously update the Memory Bank to reflect the latest state:
+
+1.  **Update Active Context:**
+    *   Log task completion status.
+    *   Document new information acquired and changes implemented.
+
+2.  **Record Technical Decisions:**
+    *   Add new technical decisions, including clear rationale, considered alternatives, and impact assessments.
+
+3.  **Update Progress Tracking:**
+    *   Mark completed items.
+    *   Integrate any newly identified tasks.
+    *   Note and document any new blockers encountered.
+
+## Rationale for Memory Bank Adherence:
+The Memory Bank serves as the central repository for project knowledge, decisions, and progress. Strict adherence to this protocol ensures:
+*   **Informed Decision-Making:** All actions are based on the latest and most complete project context.
+*   **Project Continuity:** Smooth transitions between tasks and sessions, minimizing rework and errors.
+*   **Accountability & Traceability:** A clear record of technical decisions and project evolution.
+*   **Operational Efficiency:** Reduced time spent on context switching and information retrieval.
+
+## Core Principles:
+*   **Context First:** Never proceed without a thorough understanding derived from the Memory Bank.
+*   **State Consistency:** Actively maintain and ensure the integrity of the project's recorded state.
+*   **Decision Logging:** Systematically record all significant technical decisions and their justifications.
+*   **Real-time Tracking:** Continuously update project progress and identify impediments.

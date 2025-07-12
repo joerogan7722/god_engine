@@ -1,0 +1,34 @@
+{
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\rule_engine.py": {
+        "checksum": "4b93c8b91b74c4eda07544de546ef2b5687ef9c271855c4d7d9ac723ed80a833",
+        "snapshot_file": "./snapshots\\rule_engine.py.dd891721da875386b86a78e6accaf5c6.snapshot"
+    },
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\decision.py": {
+        "checksum": "2f70b1ded7cea772474c6b894daf6c908e5295d6c12237d77d082e1ca7a86d95",
+        "snapshot_file": "./snapshots\\decision.py.8c3fc099ac03a236c12c1d2ad5825df2.snapshot"
+    },
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\morality.py": {
+        "checksum": "a40bf53c785c3eb4eb09021736f6b838009d797f5d66d765d59bd28d51f03c20",
+        "snapshot_file": "./snapshots\\morality.py.e55c931952a5acfc44149f7d6ea2a222.snapshot"
+    },
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\utils.py": {
+        "checksum": "55e88cc29672fa05d1b6b386486ba1428bc678702e13b48327a569bc5aad8788",
+        "snapshot_file": "./snapshots\\utils.py.f4e425b3ebf880f2f644338c957dbff4.snapshot"
+    },
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\logger.py": {
+        "checksum": "5d6d0ba724014f1e5afbad2335771f189f00562f6644ae821e7e553b30b01e27",
+        "snapshot_file": "./snapshots\\logger.py.95129e1f6ad1c15dc78a1fb2ee9f649c.snapshot"
+    },
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\self_improvement.py": {
+        "checksum": "4b7689d596c599d14555595b88e191b88b522f337624f4f1e4fd1b5773da9b8d",
+        "snapshot_file": "./snapshots\\self_improvement.py.2285efcbd194a7fd980531d7fe049fab.snapshot"
+    },
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\config.py": {
+        "checksum": "02ada51f19d264c9815208370e50670afa1f56e6ec275b08e324c21c9b635297",
+        "snapshot_file": "./snapshots\\config.py.ba2f98f00617193060e18a069c2f09bd.snapshot"
+    },
+    "C:\\Users\\Michael\\Desktop\\god_engine\\src\\god_engine\\experimentation_engine.py": {
+        "checksum": "d3367bbe256b38246d042cccbdaa4ed2281b69b6455a1a50c7d8f04062303c7b",
+        "snapshot_file": "./snapshots\\experimentation_engine.py.f2556803cc19a22674de69776c9fafb9.snapshot"
+    }
+}

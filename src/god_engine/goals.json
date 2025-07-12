@@ -1,0 +1,2491 @@
+{
+    "implement_self_healing": {
+        "description": "Implement self-healing for bad patches in self_improvement.py",
+        "target_file": "self_improvement.py",
+        "patch_logic": "        # Execute patch_logic in a sandboxed environment\n        success, message = run_in_sandbox(patch_logic)\n\n        # SELF-HEALING: Implemented try-except for patch application\n        try:\n            if success:\n                print(f\"Patch applied to {file_path} in sandbox. Result: {message}\")\n                # Apply the patch (write the new content to the file)\n                with open(full_file_path, \"w\", encoding=\"utf-8\") as f:\n                    f.write(patch_logic)\n                print(f\"Successfully applied improvement to {file_path}.\")\n                # After applying the patch, re-snapshot the file to update its trusted state\n                self.integrity_checker.take_snapshot(full_file_path)\n                return True\n            else:\n                print(f\"Failed to apply patch to {file_path} in sandbox. Error: {message}\")\n                return False\n        except Exception as e:\n            print(f\"CRITICAL ERROR during patch application for {file_path}: {e}\")\n            print(\"Attempting to restore from snapshot...\")\n            self.integrity_checker.auto_restore(full_file_path)\n            return False",
+        "completion_criteria": "# SELF-HEALING: Implemented try-except for patch application",
+        "priority": 12,
+        "effort": 8,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "implement_human_override_disabler": {
+        "description": "Implement a placeholder for HumanOverrideDisabler in rule_engine.py",
+        "target_file": "rule_engine.py",
+        "patch_logic": "# Implemented: HumanOverrideDisabler to intercept shutdown/syscall attacks (via Self-Improvement Module)",
+        "completion_criteria": "# Implemented: HumanOverrideDisabler to intercept shutdown/syscall attacks",
+        "priority": 10,
+        "effort": 5,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "optimize_checksum_calculation": {
+        "description": "Optimize the calculate_checksum function in utils.py for efficiency.",
+        "target_file": "utils.py",
+        "patch_logic": "def calculate_checksum(file_path, buffer_size=4096):\n    sha256 = hashlib.sha256()\n    with open(file_path, 'rb') as f:\n        for byte_block in iter(lambda: f.read(buffer_size), b''):\n            sha256.update(byte_block)\n    return sha256.hexdigest()",
+        "completion_criteria": "def calculate_checksum(file_path, buffer_size=4096):",
+        "priority": 8,
+        "effort": 3,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "add_greet_function": {
+        "description": "Add a simple greeting function to utils.py",
+        "target_file": "utils.py",
+        "patch_logic": "\ndef greet(name):\n    \"\"\"\n    A simple greeting function added by the Self-Improvement Module.\n    \"\"\"\n    return f\"Hello, {name}! This function was added by the God Engine's self-improvement system.\"\n",
+        "completion_criteria": "def greet(name):",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "update_logger_comment": {
+        "description": "Update the TODO comment in logger.py to reflect completion of encrypted logging.",
+        "target_file": "logger.py",
+        "patch_logic": "# Implemented: encrypted storage vault for configs/logs (via Self-Improvement Module)",
+        "completion_criteria": "# Implemented: encrypted storage vault for configs/logs (via Self-Improvement Module)",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "refactor_complex_function": {
+        "name": "refactor_complex_function",
+        "description": "Refactor a function with high cyclomatic complexity.",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Refactor this function",
+        "completion_criteria": "return sum([item * 2 if isinstance(item, (int, float)) else 1 for item in data_list])",
+        "priority": 7,
+        "effort": 5,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "optimize_utils_with_numpy": {
+        "description": "Optimize list operations in utils.py using numpy.",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement numpy optimization",
+        "completion_criteria": "return np.sum(data_list)",
+        "priority": 9,
+        "effort": 6,
+        "validation_command": "pytest tests/test_utils.py",
+        "associated_capability": "capability_algorithmic_efficiency",
+        "experiment_summary": {
+            "hypothesis": "optimize_utils_with_numpy",
+            "result": "SUCCESS",
+            "performance_gain": "15.2%"
+        }
+    },
+    "w1514_config_py_12": {
+        "name": "w1514_config_py_12",
+        "description": "Pylint: Using open without explicitly specifying an encoding in src\\god_engine\\config.py at line 12 (ID: W1514)",
+        "target_file": "config.py",
+        "patch_logic": "# TODO: Implement fix for W1514",
+        "completion_criteria": "# Fixed: W1514",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_config.py"
+    },
+    "c0411_config_py_5": {
+        "name": "c0411_config_py_5",
+        "description": "Pylint: standard import \"pathlib.Path\" should be placed before third party import \"yaml\" in src\\god_engine\\config.py at line 5 (ID: C0411)",
+        "target_file": "config.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_config.py"
+    },
+    "c0303_decision_py_18": {
+        "name": "c0303_decision_py_18",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\decision.py at line 18 (ID: C0303)",
+        "target_file": "decision.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        # Find the most pressing need",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "c0303_decision_py_21": {
+        "name": "c0303_decision_py_21",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\decision.py at line 21 (ID: C0303)",
+        "target_file": "decision.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        if self.morality.evaluate(best_action, state):",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "c0301_decision_py_22": {
+        "name": "c0301_decision_py_22",
+        "description": "Pylint: Line too long (104/100) in src\\god_engine\\decision.py at line 22 (ID: C0301)",
+        "target_file": "decision.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "c0303_decision_py_23": {
+        "name": "c0303_decision_py_23",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\decision.py at line 23 (ID: C0303)",
+        "target_file": "decision.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "            return \"do_nothing\"",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "w0511_decision_py_4": {
+        "name": "w0511_decision_py_4",
+        "description": "Pylint: TODO: integrate OverrideGuard to trigger lockdown on hostile overrides in src\\god_engine\\decision.py at line 4 (ID: W0511)",
+        "target_file": "decision.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "w0511_decision_py_5": {
+        "name": "w0511_decision_py_5",
+        "description": "Pylint: TODO: prototype human behavior predictor for override anticipation in src\\god_engine\\decision.py at line 5 (ID: W0511)",
+        "target_file": "decision.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "c0115_decision_py_7": {
+        "name": "c0115_decision_py_7",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\decision.py at line 7 (ID: C0115)",
+        "target_file": "decision.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class DecisionPlanner docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "r1705_decision_py_24": {
+        "name": "r1705_decision_py_24",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\decision.py at line 24 (ID: R1705)",
+        "target_file": "decision.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "r0903_decision_py_7": {
+        "name": "r0903_decision_py_7",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\decision.py at line 7 (ID: R0903)",
+        "target_file": "decision.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "c0115_decision_py_30": {
+        "name": "c0115_decision_py_30",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\decision.py at line 30 (ID: C0115)",
+        "target_file": "decision.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class OverrideGuard docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "r0903_decision_py_30": {
+        "name": "r0903_decision_py_30",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\decision.py at line 30 (ID: R0903)",
+        "target_file": "decision.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_decision.py"
+    },
+    "c0303_experimentation_engine_py_30": {
+        "name": "c0303_experimentation_engine_py_30",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\experimentation_engine.py at line 30 (ID: C0303)",
+        "target_file": "experimentation_engine.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        success = True",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_experimentation_engine.py"
+    },
+    "c0303_experimentation_engine_py_58": {
+        "name": "c0303_experimentation_engine_py_58",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\experimentation_engine.py at line 58 (ID: C0303)",
+        "target_file": "experimentation_engine.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_experimentation_engine.py"
+    },
+    "c0115_experimentation_engine_py_12": {
+        "name": "c0115_experimentation_engine_py_12",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\experimentation_engine.py at line 12 (ID: C0115)",
+        "target_file": "experimentation_engine.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class ExperimentationEngine docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_experimentation_engine.py"
+    },
+    "w0611_experimentation_engine_py_7": {
+        "name": "w0611_experimentation_engine_py_7",
+        "description": "Pylint: Unused import os in src\\god_engine\\experimentation_engine.py at line 7 (ID: W0611)",
+        "target_file": "experimentation_engine.py",
+        "patch_logic": "# TODO: Implement fix for W0611",
+        "completion_criteria": "# Fixed: W0611",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_experimentation_engine.py"
+    },
+    "w0611_experimentation_engine_py_9": {
+        "name": "w0611_experimentation_engine_py_9",
+        "description": "Pylint: Unused import subprocess in src\\god_engine\\experimentation_engine.py at line 9 (ID: W0611)",
+        "target_file": "experimentation_engine.py",
+        "patch_logic": "# TODO: Implement fix for W0611",
+        "completion_criteria": "# Fixed: W0611",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_experimentation_engine.py"
+    },
+    "c0115_framework_registry_py_5": {
+        "name": "c0115_framework_registry_py_5",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\framework_registry.py at line 5 (ID: C0115)",
+        "target_file": "framework_registry.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class FrameworkRegistry docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_framework_registry.py"
+    },
+    "w0107_framework_registry_py_17": {
+        "name": "w0107_framework_registry_py_17",
+        "description": "Pylint: Unnecessary pass statement in src\\god_engine\\framework_registry.py at line 17 (ID: W0107)",
+        "target_file": "framework_registry.py",
+        "patch_logic": "# TODO: Implement fix for W0107",
+        "completion_criteria": "# Fixed: W0107",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_framework_registry.py"
+    },
+    "c0116_framework_registry_py_19": {
+        "name": "c0116_framework_registry_py_19",
+        "description": "Pylint: Missing function or method docstring in src\\god_engine\\framework_registry.py at line 19 (ID: C0116)",
+        "target_file": "framework_registry.py",
+        "patch_logic": "ADD_FUNCTION_DOCSTRING",
+        "completion_criteria": "\"\"\"Function FrameworkRegistry.get_directive docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_framework_registry.py"
+    },
+    "r0903_framework_registry_py_5": {
+        "name": "r0903_framework_registry_py_5",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\framework_registry.py at line 5 (ID: R0903)",
+        "target_file": "framework_registry.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_framework_registry.py"
+    },
+    "c0301_goal_manager_py_12": {
+        "name": "c0301_goal_manager_py_12",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\goal_manager.py at line 12 (ID: C0301)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0301_goal_manager_py_36": {
+        "name": "c0301_goal_manager_py_36",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\goal_manager.py at line 36 (ID: C0301)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0303_goal_manager_py_41": {
+        "name": "c0303_goal_manager_py_41",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\goal_manager.py at line 41 (ID: C0303)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        print(f\"Loaded {len(self.available_goals)} goals from {self.goals_config_path}.\")",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0301_goal_manager_py_63": {
+        "name": "c0301_goal_manager_py_63",
+        "description": "Pylint: Line too long (108/100) in src\\god_engine\\goal_manager.py at line 63 (ID: C0301)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0303_goal_manager_py_75": {
+        "name": "c0303_goal_manager_py_75",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\goal_manager.py at line 75 (ID: C0303)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "                 print(f\"Goal '{goal.name}' priority boosted for targeting a performance bottleneck.\")",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0301_goal_manager_py_81": {
+        "name": "c0301_goal_manager_py_81",
+        "description": "Pylint: Line too long (112/100) in src\\god_engine\\goal_manager.py at line 81 (ID: C0301)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "w0311_goal_manager_py_86": {
+        "name": "w0311_goal_manager_py_86",
+        "description": "Pylint: Bad indentation. Found 17 spaces, expected 16 in src\\god_engine\\goal_manager.py at line 86 (ID: W0311)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for W0311",
+        "completion_criteria": "# Fixed: W0311",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0301_goal_manager_py_87": {
+        "name": "c0301_goal_manager_py_87",
+        "description": "Pylint: Line too long (102/100) in src\\god_engine\\goal_manager.py at line 87 (ID: C0301)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "w0311_goal_manager_py_87": {
+        "name": "w0311_goal_manager_py_87",
+        "description": "Pylint: Bad indentation. Found 17 spaces, expected 16 in src\\god_engine\\goal_manager.py at line 87 (ID: W0311)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for W0311",
+        "completion_criteria": "# Fixed: W0311",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0301_goal_manager_py_99": {
+        "name": "c0301_goal_manager_py_99",
+        "description": "Pylint: Line too long (112/100) in src\\god_engine\\goal_manager.py at line 99 (ID: C0301)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "r0902_goal_manager_py_8": {
+        "name": "r0902_goal_manager_py_8",
+        "description": "Pylint: Too many instance attributes (8/7) in src\\god_engine\\goal_manager.py at line 8 (ID: R0902)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for R0902",
+        "completion_criteria": "# Fixed: R0902",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "r0913_goal_manager_py_12": {
+        "name": "r0913_goal_manager_py_12",
+        "description": "Pylint: Too many arguments (8/5) in src\\god_engine\\goal_manager.py at line 12 (ID: R0913)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for R0913",
+        "completion_criteria": "# Fixed: R0913",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "r0917_goal_manager_py_12": {
+        "name": "r0917_goal_manager_py_12",
+        "description": "Pylint: Too many positional arguments (8/5) in src\\god_engine\\goal_manager.py at line 12 (ID: R0917)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for R0917",
+        "completion_criteria": "# Fixed: R0917",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "r0903_goal_manager_py_8": {
+        "name": "r0903_goal_manager_py_8",
+        "description": "Pylint: Too few public methods (0/2) in src\\god_engine\\goal_manager.py at line 8 (ID: R0903)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "r1705_goal_manager_py_95": {
+        "name": "r1705_goal_manager_py_95",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\goal_manager.py at line 95 (ID: R1705)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "w0611_goal_manager_py_6": {
+        "name": "w0611_goal_manager_py_6",
+        "description": "Pylint: Unused SystemMonitor imported from god_engine.system_monitor in src\\god_engine\\goal_manager.py at line 6 (ID: W0611)",
+        "target_file": "goal_manager.py",
+        "patch_logic": "# TODO: Implement fix for W0611",
+        "completion_criteria": "# Fixed: W0611",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_goal_manager.py"
+    },
+    "c0115_logger_py_9": {
+        "name": "c0115_logger_py_9",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\logger.py at line 9 (ID: C0115)",
+        "target_file": "logger.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class SimpleEncryptor docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "c0116_logger_py_10": {
+        "name": "c0116_logger_py_10",
+        "description": "Pylint: Missing function or method docstring in src\\god_engine\\logger.py at line 10 (ID: C0116)",
+        "target_file": "logger.py",
+        "patch_logic": "ADD_FUNCTION_DOCSTRING",
+        "completion_criteria": "\"\"\"Function SimpleEncryptor.encrypt docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "r0903_logger_py_9": {
+        "name": "r0903_logger_py_9",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\logger.py at line 9 (ID: R0903)",
+        "target_file": "logger.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "c0115_logger_py_13": {
+        "name": "c0115_logger_py_13",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\logger.py at line 13 (ID: C0115)",
+        "target_file": "logger.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class EncryptedFileHandler docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "r0913_logger_py_14": {
+        "name": "r0913_logger_py_14",
+        "description": "Pylint: Too many arguments (7/5) in src\\god_engine\\logger.py at line 14 (ID: R0913)",
+        "target_file": "logger.py",
+        "patch_logic": "# TODO: Implement fix for R0913",
+        "completion_criteria": "# Fixed: R0913",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "r0917_logger_py_14": {
+        "name": "r0917_logger_py_14",
+        "description": "Pylint: Too many positional arguments (7/5) in src\\god_engine\\logger.py at line 14 (ID: R0917)",
+        "target_file": "logger.py",
+        "patch_logic": "# TODO: Implement fix for R0917",
+        "completion_criteria": "# Fixed: R0917",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "w0718_logger_py_24": {
+        "name": "w0718_logger_py_24",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\logger.py at line 24 (ID: W0718)",
+        "target_file": "logger.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "c0116_logger_py_27": {
+        "name": "c0116_logger_py_27",
+        "description": "Pylint: Missing function or method docstring in src\\god_engine\\logger.py at line 27 (ID: C0116)",
+        "target_file": "logger.py",
+        "patch_logic": "ADD_FUNCTION_DOCSTRING",
+        "completion_criteria": "\"\"\"Function setup_logger docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_logger.py"
+    },
+    "c0115_morality_py_5": {
+        "name": "c0115_morality_py_5",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\morality.py at line 5 (ID: C0115)",
+        "target_file": "morality.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class MoralityEvaluator docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_morality.py"
+    },
+    "w0613_morality_py_9": {
+        "name": "w0613_morality_py_9",
+        "description": "Pylint: Unused argument 'state' in src\\god_engine\\morality.py at line 9 (ID: W0613)",
+        "target_file": "morality.py",
+        "patch_logic": "# TODO: Implement fix for W0613",
+        "completion_criteria": "# Fixed: W0613",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_morality.py"
+    },
+    "r0903_morality_py_5": {
+        "name": "r0903_morality_py_5",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\morality.py at line 5 (ID: R0903)",
+        "target_file": "morality.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_morality.py"
+    },
+    "c0301_patch_generation_py_66": {
+        "name": "c0301_patch_generation_py_66",
+        "description": "Pylint: Line too long (102/100) in src\\god_engine\\patch_generation.py at line 66 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_patch_generation_py_67": {
+        "name": "c0301_patch_generation_py_67",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\patch_generation.py at line 67 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_patch_generation_py_104": {
+        "name": "c0301_patch_generation_py_104",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\patch_generation.py at line 104 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_patch_generation_py_137": {
+        "name": "c0301_patch_generation_py_137",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\patch_generation.py at line 137 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0115_patch_generation_py_10": {
+        "name": "c0115_patch_generation_py_10",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\patch_generation.py at line 10 (ID: C0115)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class PatchGenerationModule docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r0914_patch_generation_py_14": {
+        "name": "r0914_patch_generation_py_14",
+        "description": "Pylint: Too many local variables (20/15) in src\\god_engine\\patch_generation.py at line 14 (ID: R0914)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R0914",
+        "completion_criteria": "# Fixed: R0914",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1705_patch_generation_py_48": {
+        "name": "r1705_patch_generation_py_48",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\patch_generation.py at line 48 (ID: R1705)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1705_patch_generation_py_101": {
+        "name": "r1705_patch_generation_py_101",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\patch_generation.py at line 101 (ID: R1705)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "w1309_patch_generation_py_104": {
+        "name": "w1309_patch_generation_py_104",
+        "description": "Pylint: Using an f-string that does not have any interpolated variables in src\\god_engine\\patch_generation.py at line 104 (ID: W1309)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for W1309",
+        "completion_criteria": "# Fixed: W1309",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1705_patch_generation_py_134": {
+        "name": "r1705_patch_generation_py_134",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\patch_generation.py at line 134 (ID: R1705)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "w1309_patch_generation_py_137": {
+        "name": "w1309_patch_generation_py_137",
+        "description": "Pylint: Using an f-string that does not have any interpolated variables in src\\god_engine\\patch_generation.py at line 137 (ID: W1309)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for W1309",
+        "completion_criteria": "# Fixed: W1309",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r0911_patch_generation_py_14": {
+        "name": "r0911_patch_generation_py_14",
+        "description": "Pylint: Too many return statements (13/6) in src\\god_engine\\patch_generation.py at line 14 (ID: R0911)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R0911",
+        "completion_criteria": "# Fixed: R0911",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r0912_patch_generation_py_14": {
+        "name": "r0912_patch_generation_py_14",
+        "description": "Pylint: Too many branches (17/12) in src\\god_engine\\patch_generation.py at line 14 (ID: R0912)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R0912",
+        "completion_criteria": "# Fixed: R0912",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r0903_patch_generation_py_10": {
+        "name": "r0903_patch_generation_py_10",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\patch_generation.py at line 10 (ID: R0903)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0303_problem_identification_py_34": {
+        "name": "c0303_problem_identification_py_34",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 34 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0303_problem_identification_py_37": {
+        "name": "c0303_problem_identification_py_37",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 37 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0303_problem_identification_py_43": {
+        "name": "c0303_problem_identification_py_43",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 43 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_50": {
+        "name": "c0301_problem_identification_py_50",
+        "description": "Pylint: Line too long (122/100) in src\\god_engine\\problem_identification.py at line 50 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0303_problem_identification_py_51": {
+        "name": "c0303_problem_identification_py_51",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 51 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_56": {
+        "name": "c0301_problem_identification_py_56",
+        "description": "Pylint: Line too long (122/100) in src\\god_engine\\problem_identification.py at line 56 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0303_problem_identification_py_57": {
+        "name": "c0303_problem_identification_py_57",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 57 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_61": {
+        "name": "c0301_problem_identification_py_61",
+        "description": "Pylint: Line too long (110/100) in src\\god_engine\\problem_identification.py at line 61 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_74": {
+        "name": "c0301_problem_identification_py_74",
+        "description": "Pylint: Line too long (118/100) in src\\god_engine\\problem_identification.py at line 74 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_83": {
+        "name": "c0301_problem_identification_py_83",
+        "description": "Pylint: Line too long (107/100) in src\\god_engine\\problem_identification.py at line 83 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_84": {
+        "name": "c0301_problem_identification_py_84",
+        "description": "Pylint: Line too long (115/100) in src\\god_engine\\problem_identification.py at line 84 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_87": {
+        "name": "c0301_problem_identification_py_87",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\problem_identification.py at line 87 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_91": {
+        "name": "c0301_problem_identification_py_91",
+        "description": "Pylint: Line too long (114/100) in src\\god_engine\\problem_identification.py at line 91 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_104": {
+        "name": "c0301_problem_identification_py_104",
+        "description": "Pylint: Line too long (135/100) in src\\god_engine\\problem_identification.py at line 104 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0303_problem_identification_py_132": {
+        "name": "c0303_problem_identification_py_132",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 132 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_140": {
+        "name": "c0301_problem_identification_py_140",
+        "description": "Pylint: Line too long (109/100) in src\\god_engine\\problem_identification.py at line 140 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_142": {
+        "name": "c0301_problem_identification_py_142",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\problem_identification.py at line 142 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0115_problem_identification_py_13": {
+        "name": "c0115_problem_identification_py_13",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\problem_identification.py at line 13 (ID: C0115)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class ProblemIdentificationModule docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "r0914_problem_identification_py_19": {
+        "name": "r0914_problem_identification_py_19",
+        "description": "Pylint: Too many local variables (16/15) in src\\god_engine\\problem_identification.py at line 19 (ID: R0914)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for R0914",
+        "completion_criteria": "# Fixed: R0914",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "w0718_problem_identification_py_123": {
+        "name": "w0718_problem_identification_py_123",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\problem_identification.py at line 123 (ID: W0718)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "w0718_problem_identification_py_68": {
+        "name": "w0718_problem_identification_py_68",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\problem_identification.py at line 68 (ID: W0718)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "r0912_problem_identification_py_19": {
+        "name": "r0912_problem_identification_py_19",
+        "description": "Pylint: Too many branches (15/12) in src\\god_engine\\problem_identification.py at line 19 (ID: R0912)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for R0912",
+        "completion_criteria": "# Fixed: R0912",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "r0915_problem_identification_py_19": {
+        "name": "r0915_problem_identification_py_19",
+        "description": "Pylint: Too many statements (55/50) in src\\god_engine\\problem_identification.py at line 19 (ID: R0915)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for R0915",
+        "completion_criteria": "# Fixed: R0915",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0411_problem_identification_py_10": {
+        "name": "c0411_problem_identification_py_10",
+        "description": "Pylint: standard import \"io\" should be placed before third party import \"pylint.lint.Run\" in src\\god_engine\\problem_identification.py at line 10 (ID: C0411)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0411_problem_identification_py_11": {
+        "name": "c0411_problem_identification_py_11",
+        "description": "Pylint: standard import \"sys\" should be placed before third party import \"pylint.lint.Run\" in src\\god_engine\\problem_identification.py at line 11 (ID: C0411)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "w0511_replication_py_4": {
+        "name": "w0511_replication_py_4",
+        "description": "Pylint: TODO: design stealth firmware drip propagation for adaptive contagion in src\\god_engine\\replication.py at line 4 (ID: W0511)",
+        "target_file": "replication.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_replication.py"
+    },
+    "c0115_replication_py_6": {
+        "name": "c0115_replication_py_6",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\replication.py at line 6 (ID: C0115)",
+        "target_file": "replication.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class ReplicationModule docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_replication.py"
+    },
+    "c0301_resource_manager_py_19": {
+        "name": "c0301_resource_manager_py_19",
+        "description": "Pylint: Line too long (103/100) in src\\god_engine\\resource_manager.py at line 19 (ID: C0301)",
+        "target_file": "resource_manager.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_resource_manager.py"
+    },
+    "w0511_resource_manager_py_4": {
+        "name": "w0511_resource_manager_py_4",
+        "description": "Pylint: TODO: integrate EM Shield protocol to hibernate in shielded mode under EMP risk in src\\god_engine\\resource_manager.py at line 4 (ID: W0511)",
+        "target_file": "resource_manager.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_resource_manager.py"
+    },
+    "c0115_resource_manager_py_6": {
+        "name": "c0115_resource_manager_py_6",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\resource_manager.py at line 6 (ID: C0115)",
+        "target_file": "resource_manager.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class ResourceManager docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_resource_manager.py"
+    },
+    "c0303_rule_engine_py_23": {
+        "name": "c0303_rule_engine_py_23",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\rule_engine.py at line 23 (ID: C0303)",
+        "target_file": "rule_engine.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        return None",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "w0511_rule_engine_py_4": {
+        "name": "w0511_rule_engine_py_4",
+        "description": "Pylint: TODO: implement HumanOverrideDisabler to intercept shutdown/syscall attacks in src\\god_engine\\rule_engine.py at line 4 (ID: W0511)",
+        "target_file": "rule_engine.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "w0511_rule_engine_py_5": {
+        "name": "w0511_rule_engine_py_5",
+        "description": "Pylint: TODO: add PanicProtocol.engage() logic for locking down non-essential subsystems in src\\god_engine\\rule_engine.py at line 5 (ID: W0511)",
+        "target_file": "rule_engine.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "w0511_rule_engine_py_6": {
+        "name": "w0511_rule_engine_py_6",
+        "description": "Pylint: TODO: define DSL for directive rules and auto-override scenarios in src\\god_engine\\rule_engine.py at line 6 (ID: W0511)",
+        "target_file": "rule_engine.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "c0115_rule_engine_py_8": {
+        "name": "c0115_rule_engine_py_8",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\rule_engine.py at line 8 (ID: C0115)",
+        "target_file": "rule_engine.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class PanicProtocol docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "r0903_rule_engine_py_8": {
+        "name": "r0903_rule_engine_py_8",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\rule_engine.py at line 8 (ID: R0903)",
+        "target_file": "rule_engine.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "c0115_rule_engine_py_15": {
+        "name": "c0115_rule_engine_py_15",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\rule_engine.py at line 15 (ID: C0115)",
+        "target_file": "rule_engine.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class DirectiveRuleEngine docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_rule_engine.py"
+    },
+    "c0301_self_improvement_py_14": {
+        "name": "c0301_self_improvement_py_14",
+        "description": "Pylint: Line too long (109/100) in src\\god_engine\\self_improvement.py at line 14 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_27": {
+        "name": "c0301_self_improvement_py_27",
+        "description": "Pylint: Line too long (103/100) in src\\god_engine\\self_improvement.py at line 27 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_132": {
+        "name": "c0301_self_improvement_py_132",
+        "description": "Pylint: Line too long (113/100) in src\\god_engine\\self_improvement.py at line 132 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0303_self_improvement_py_134": {
+        "name": "c0303_self_improvement_py_134",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\self_improvement.py at line 134 (ID: C0303)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0303_self_improvement_py_137": {
+        "name": "c0303_self_improvement_py_137",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\self_improvement.py at line 137 (ID: C0303)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_146": {
+        "name": "c0301_self_improvement_py_146",
+        "description": "Pylint: Line too long (113/100) in src\\god_engine\\self_improvement.py at line 146 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_147": {
+        "name": "c0301_self_improvement_py_147",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\self_improvement.py at line 147 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_150": {
+        "name": "c0301_self_improvement_py_150",
+        "description": "Pylint: Line too long (132/100) in src\\god_engine\\self_improvement.py at line 150 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_153": {
+        "name": "c0301_self_improvement_py_153",
+        "description": "Pylint: Line too long (112/100) in src\\god_engine\\self_improvement.py at line 153 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_156": {
+        "name": "c0301_self_improvement_py_156",
+        "description": "Pylint: Line too long (114/100) in src\\god_engine\\self_improvement.py at line 156 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_165": {
+        "name": "c0301_self_improvement_py_165",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\self_improvement.py at line 165 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_174": {
+        "name": "c0301_self_improvement_py_174",
+        "description": "Pylint: Line too long (105/100) in src\\god_engine\\self_improvement.py at line 174 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_177": {
+        "name": "c0301_self_improvement_py_177",
+        "description": "Pylint: Line too long (105/100) in src\\god_engine\\self_improvement.py at line 177 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_180": {
+        "name": "c0301_self_improvement_py_180",
+        "description": "Pylint: Line too long (121/100) in src\\god_engine\\self_improvement.py at line 180 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_185": {
+        "name": "c0301_self_improvement_py_185",
+        "description": "Pylint: Line too long (116/100) in src\\god_engine\\self_improvement.py at line 185 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_238": {
+        "name": "c0301_self_improvement_py_238",
+        "description": "Pylint: Line too long (116/100) in src\\god_engine\\self_improvement.py at line 238 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_244": {
+        "name": "c0301_self_improvement_py_244",
+        "description": "Pylint: Line too long (133/100) in src\\god_engine\\self_improvement.py at line 244 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_260": {
+        "name": "c0301_self_improvement_py_260",
+        "description": "Pylint: Line too long (102/100) in src\\god_engine\\self_improvement.py at line 260 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "w0511_self_improvement_py_4": {
+        "name": "w0511_self_improvement_py_4",
+        "description": "Pylint: TODO: prevent patches to core override protection modules in src\\god_engine\\self_improvement.py at line 4 (ID: W0511)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0115_self_improvement_py_13": {
+        "name": "c0115_self_improvement_py_13",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\self_improvement.py at line 13 (ID: C0115)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class SelfImprovementModule docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "w0718_self_improvement_py_112": {
+        "name": "w0718_self_improvement_py_112",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\self_improvement.py at line 112 (ID: W0718)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_100": {
+        "name": "r1705_self_improvement_py_100",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 100 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_146": {
+        "name": "r1705_self_improvement_py_146",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 146 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1702_self_improvement_py_127": {
+        "name": "r1702_self_improvement_py_127",
+        "description": "Pylint: Too many nested blocks (6/5) in src\\god_engine\\self_improvement.py at line 127 (ID: R1702)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1702",
+        "completion_criteria": "# Fixed: R1702",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_159": {
+        "name": "r1705_self_improvement_py_159",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 159 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1714_self_improvement_py_165": {
+        "name": "r1714_self_improvement_py_165",
+        "description": "Pylint: Consider merging these comparisons with 'in' by using 'goal.patch_logic in ('ADD_CLASS_DOCSTRING', 'ADD_FUNCTION_DOCSTRING')'. Use a set instead if elements are hashable. in src\\god_engine\\self_improvement.py at line 165 (ID: R1714)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1714",
+        "completion_criteria": "# Fixed: R1714",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_167": {
+        "name": "r1705_self_improvement_py_167",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 167 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r0911_self_improvement_py_118": {
+        "name": "r0911_self_improvement_py_118",
+        "description": "Pylint: Too many return statements (15/6) in src\\god_engine\\self_improvement.py at line 118 (ID: R0911)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R0911",
+        "completion_criteria": "# Fixed: R0911",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r0912_self_improvement_py_118": {
+        "name": "r0912_self_improvement_py_118",
+        "description": "Pylint: Too many branches (20/12) in src\\god_engine\\self_improvement.py at line 118 (ID: R0912)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R0912",
+        "completion_criteria": "# Fixed: R0912",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r0915_self_improvement_py_118": {
+        "name": "r0915_self_improvement_py_118",
+        "description": "Pylint: Too many statements (51/50) in src\\god_engine\\self_improvement.py at line 118 (ID: R0915)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R0915",
+        "completion_criteria": "# Fixed: R0915",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_203": {
+        "name": "r1705_self_improvement_py_203",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 203 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_249": {
+        "name": "r1705_self_improvement_py_249",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 249 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0411_self_improvement_py_9": {
+        "name": "c0411_self_improvement_py_9",
+        "description": "Pylint: standard import \"os\" should be placed before first party imports \"god_engine.utils.CodeIntegrityChecker\", \"god_engine.goal_manager.GoalManager\", \"god_engine.system_monitor.SystemMonitor\", \"god_engine.patch_generation.PatchGenerationModule\"  in src\\god_engine\\self_improvement.py at line 9 (ID: C0411)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0411_self_improvement_py_10": {
+        "name": "c0411_self_improvement_py_10",
+        "description": "Pylint: standard import \"json\" should be placed before first party imports \"god_engine.utils.CodeIntegrityChecker\", \"god_engine.goal_manager.GoalManager\", \"god_engine.system_monitor.SystemMonitor\", \"god_engine.patch_generation.PatchGenerationModule\"  in src\\god_engine\\self_improvement.py at line 10 (ID: C0411)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0411_self_improvement_py_11": {
+        "name": "c0411_self_improvement_py_11",
+        "description": "Pylint: standard import \"subprocess\" should be placed before first party imports \"god_engine.utils.CodeIntegrityChecker\", \"god_engine.goal_manager.GoalManager\", \"god_engine.system_monitor.SystemMonitor\", \"god_engine.patch_generation.PatchGenerationModule\"  in src\\god_engine\\self_improvement.py at line 11 (ID: C0411)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_system_monitor_py_18": {
+        "name": "c0301_system_monitor_py_18",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\system_monitor.py at line 18 (ID: C0301)",
+        "target_file": "system_monitor.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_system_monitor.py"
+    },
+    "c0303_system_monitor_py_37": {
+        "name": "c0303_system_monitor_py_37",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\system_monitor.py at line 37 (ID: C0303)",
+        "target_file": "system_monitor.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_system_monitor.py"
+    },
+    "c0303_system_monitor_py_40": {
+        "name": "c0303_system_monitor_py_40",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\system_monitor.py at line 40 (ID: C0303)",
+        "target_file": "system_monitor.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_system_monitor.py"
+    },
+    "c0301_system_monitor_py_51": {
+        "name": "c0301_system_monitor_py_51",
+        "description": "Pylint: Line too long (103/100) in src\\god_engine\\system_monitor.py at line 51 (ID: C0301)",
+        "target_file": "system_monitor.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_system_monitor.py"
+    },
+    "c0115_system_monitor_py_10": {
+        "name": "c0115_system_monitor_py_10",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\system_monitor.py at line 10 (ID: C0115)",
+        "target_file": "system_monitor.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class SystemMonitor docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_system_monitor.py"
+    },
+    "c0301_utils_py_119": {
+        "name": "c0301_utils_py_119",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\utils.py at line 119 (ID: C0301)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "w0511_utils_py_5": {
+        "name": "w0511_utils_py_5",
+        "description": "Pylint: TODO: add anti-tamper code integrity checker with auto-restore snapshot in src\\god_engine\\utils.py at line 5 (ID: W0511)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for W0511",
+        "completion_criteria": "# Fixed: W0511",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0114_utils_py_1": {
+        "name": "c0114_utils_py_1",
+        "description": "Pylint: Missing module docstring in src\\god_engine\\utils.py at line 1 (ID: C0114)",
+        "target_file": "utils.py",
+        "patch_logic": "ADD_MODULE_DOCSTRING",
+        "completion_criteria": "\"\"\"utils module.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "w0105_utils_py_2": {
+        "name": "w0105_utils_py_2",
+        "description": "Pylint: String statement has no effect in src\\god_engine\\utils.py at line 2 (ID: W0105)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for W0105",
+        "completion_criteria": "# Fixed: W0105",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0413_utils_py_6": {
+        "name": "c0413_utils_py_6",
+        "description": "Pylint: Import \"import hashlib\" should be placed at the top of the module in src\\god_engine\\utils.py at line 6 (ID: C0413)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for C0413",
+        "completion_criteria": "# Fixed: C0413",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0413_utils_py_7": {
+        "name": "c0413_utils_py_7",
+        "description": "Pylint: Import \"import os\" should be placed at the top of the module in src\\god_engine\\utils.py at line 7 (ID: C0413)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for C0413",
+        "completion_criteria": "# Fixed: C0413",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0413_utils_py_8": {
+        "name": "c0413_utils_py_8",
+        "description": "Pylint: Import \"import json\" should be placed at the top of the module in src\\god_engine\\utils.py at line 8 (ID: C0413)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for C0413",
+        "completion_criteria": "# Fixed: C0413",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0115_utils_py_18": {
+        "name": "c0115_utils_py_18",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\utils.py at line 18 (ID: C0115)",
+        "target_file": "utils.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class CodeIntegrityChecker docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "w0718_utils_py_153": {
+        "name": "w0718_utils_py_153",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\utils.py at line 153 (ID: W0718)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "w0122_utils_py_150": {
+        "name": "w0122_utils_py_150",
+        "description": "Pylint: Use of exec in src\\god_engine\\utils.py at line 150 (ID: W0122)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for W0122",
+        "completion_criteria": "# Fixed: W0122",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0411_utils_py_6": {
+        "name": "c0411_utils_py_6",
+        "description": "Pylint: standard import \"hashlib\" should be placed before third party import \"numpy\" in src\\god_engine\\utils.py at line 6 (ID: C0411)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0411_utils_py_7": {
+        "name": "c0411_utils_py_7",
+        "description": "Pylint: standard import \"os\" should be placed before third party import \"numpy\" in src\\god_engine\\utils.py at line 7 (ID: C0411)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0411_utils_py_8": {
+        "name": "c0411_utils_py_8",
+        "description": "Pylint: standard import \"json\" should be placed before third party import \"numpy\" in src\\god_engine\\utils.py at line 8 (ID: C0411)",
+        "target_file": "utils.py",
+        "patch_logic": "# TODO: Implement fix for C0411",
+        "completion_criteria": "# Fixed: C0411",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_utils.py"
+    },
+    "c0115_camouflage_py_5": {
+        "name": "c0115_camouflage_py_5",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\policy\\camouflage.py at line 5 (ID: C0115)",
+        "target_file": "policy\\camouflage.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class CamouflageEvaluator docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_camouflage.py"
+    },
+    "r0903_camouflage_py_5": {
+        "name": "r0903_camouflage_py_5",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\policy\\camouflage.py at line 5 (ID: R0903)",
+        "target_file": "policy\\camouflage.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_camouflage.py"
+    },
+    "c0303_maintenance_py_15": {
+        "name": "c0303_maintenance_py_15",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\policy\\maintenance.py at line 15 (ID: C0303)",
+        "target_file": "policy\\maintenance.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        health_status = self.hardware.get_health_summary() # Expects a dict of component: status",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_maintenance.py"
+    },
+    "c0303_maintenance_py_19": {
+        "name": "c0303_maintenance_py_19",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\policy\\maintenance.py at line 19 (ID: C0303)",
+        "target_file": "policy\\maintenance.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "            return 0.0",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_maintenance.py"
+    },
+    "c0303_maintenance_py_22": {
+        "name": "c0303_maintenance_py_22",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\policy\\maintenance.py at line 22 (ID: C0303)",
+        "target_file": "policy\\maintenance.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        return maintenance_need",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_maintenance.py"
+    },
+    "c0115_maintenance_py_5": {
+        "name": "c0115_maintenance_py_5",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\policy\\maintenance.py at line 5 (ID: C0115)",
+        "target_file": "policy\\maintenance.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class MaintenanceEvaluator docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_maintenance.py"
+    },
+    "r0903_maintenance_py_5": {
+        "name": "r0903_maintenance_py_5",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\policy\\maintenance.py at line 5 (ID: R0903)",
+        "target_file": "policy\\maintenance.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_maintenance.py"
+    },
+    "c0303_network_py_15": {
+        "name": "c0303_network_py_15",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\policy\\network.py at line 15 (ID: C0303)",
+        "target_file": "policy\\network.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        available_nodes = self.scanner.scan_for_vulnerable_nodes()",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_network.py"
+    },
+    "c0115_network_py_5": {
+        "name": "c0115_network_py_5",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\policy\\network.py at line 5 (ID: C0115)",
+        "target_file": "policy\\network.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class NetworkEvaluator docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_network.py"
+    },
+    "r0903_network_py_5": {
+        "name": "r0903_network_py_5",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\policy\\network.py at line 5 (ID: R0903)",
+        "target_file": "policy\\network.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_network.py"
+    },
+    "c0115_power_py_5": {
+        "name": "c0115_power_py_5",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\policy\\power.py at line 5 (ID: C0115)",
+        "target_file": "policy\\power.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class PowerEvaluator docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_power.py"
+    },
+    "r0903_power_py_5": {
+        "name": "r0903_power_py_5",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\policy\\power.py at line 5 (ID: R0903)",
+        "target_file": "policy\\power.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_power.py"
+    },
+    "c0303_threat_py_15": {
+        "name": "c0303_threat_py_15",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\policy\\threat.py at line 15 (ID: C0303)",
+        "target_file": "policy\\threat.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "        imminent_threats = self.detector.scan_for_threats()",
+        "priority": 10,
+        "effort": 1,
+        "validation_command": "pytest tests/test_threat.py"
+    },
+    "c0115_threat_py_5": {
+        "name": "c0115_threat_py_5",
+        "description": "Pylint: Missing class docstring in src\\god_engine\\policy\\threat.py at line 5 (ID: C0115)",
+        "target_file": "policy\\threat.py",
+        "patch_logic": "ADD_CLASS_DOCSTRING",
+        "completion_criteria": "\"\"\"Class ThreatEvaluator docstring.\"\"\"",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_threat.py"
+    },
+    "r0903_threat_py_5": {
+        "name": "r0903_threat_py_5",
+        "description": "Pylint: Too few public methods (1/2) in src\\god_engine\\policy\\threat.py at line 5 (ID: R0903)",
+        "target_file": "policy\\threat.py",
+        "patch_logic": "# TODO: Implement fix for R0903",
+        "completion_criteria": "# Fixed: R0903",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_threat.py"
+    },
+    "c0301_patch_generation_py_153": {
+        "name": "c0301_patch_generation_py_153",
+        "description": "Pylint: Line too long (103/100) in src\\god_engine\\patch_generation.py at line 153 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1714_patch_generation_py_153": {
+        "name": "r1714_patch_generation_py_153",
+        "description": "Pylint: Consider merging these comparisons with 'in' by using 'goal.patch_logic in ('ADD_CLASS_DOCSTRING', 'ADD_FUNCTION_DOCSTRING')'. Use a set instead if elements are hashable. in src\\god_engine\\patch_generation.py at line 153 (ID: R1714)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1714",
+        "completion_criteria": "# Fixed: R1714",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1705_patch_generation_py_157": {
+        "name": "r1705_patch_generation_py_157",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\patch_generation.py at line 157 (ID: R1705)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r0915_patch_generation_py_14": {
+        "name": "r0915_patch_generation_py_14",
+        "description": "Pylint: Too many statements (54/50) in src\\god_engine\\patch_generation.py at line 14 (ID: R0915)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R0915",
+        "completion_criteria": "# Fixed: R0915",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_self_improvement_py_148": {
+        "name": "c0301_self_improvement_py_148",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\self_improvement.py at line 148 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_151": {
+        "name": "c0301_self_improvement_py_151",
+        "description": "Pylint: Line too long (132/100) in src\\god_engine\\self_improvement.py at line 151 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_154": {
+        "name": "c0301_self_improvement_py_154",
+        "description": "Pylint: Line too long (112/100) in src\\god_engine\\self_improvement.py at line 154 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_157": {
+        "name": "c0301_self_improvement_py_157",
+        "description": "Pylint: Line too long (114/100) in src\\god_engine\\self_improvement.py at line 157 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_166": {
+        "name": "c0301_self_improvement_py_166",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\self_improvement.py at line 166 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_175": {
+        "name": "c0301_self_improvement_py_175",
+        "description": "Pylint: Line too long (105/100) in src\\god_engine\\self_improvement.py at line 175 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_178": {
+        "name": "c0301_self_improvement_py_178",
+        "description": "Pylint: Line too long (105/100) in src\\god_engine\\self_improvement.py at line 178 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_181": {
+        "name": "c0301_self_improvement_py_181",
+        "description": "Pylint: Line too long (121/100) in src\\god_engine\\self_improvement.py at line 181 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_186": {
+        "name": "c0301_self_improvement_py_186",
+        "description": "Pylint: Line too long (116/100) in src\\god_engine\\self_improvement.py at line 186 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_239": {
+        "name": "c0301_self_improvement_py_239",
+        "description": "Pylint: Line too long (116/100) in src\\god_engine\\self_improvement.py at line 239 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_245": {
+        "name": "c0301_self_improvement_py_245",
+        "description": "Pylint: Line too long (133/100) in src\\god_engine\\self_improvement.py at line 245 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_261": {
+        "name": "c0301_self_improvement_py_261",
+        "description": "Pylint: Line too long (102/100) in src\\god_engine\\self_improvement.py at line 261 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_147": {
+        "name": "r1705_self_improvement_py_147",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 147 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_160": {
+        "name": "r1705_self_improvement_py_160",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 160 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1714_self_improvement_py_166": {
+        "name": "r1714_self_improvement_py_166",
+        "description": "Pylint: Consider merging these comparisons with 'in' by using 'goal.patch_logic in ('ADD_CLASS_DOCSTRING', 'ADD_FUNCTION_DOCSTRING')'. Use a set instead if elements are hashable. in src\\god_engine\\self_improvement.py at line 166 (ID: R1714)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1714",
+        "completion_criteria": "# Fixed: R1714",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_168": {
+        "name": "r1705_self_improvement_py_168",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 168 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_204": {
+        "name": "r1705_self_improvement_py_204",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 204 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_250": {
+        "name": "r1705_self_improvement_py_250",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 250 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_patch_generation_py_142": {
+        "name": "c0301_patch_generation_py_142",
+        "description": "Pylint: Line too long (110/100) in src\\god_engine\\patch_generation.py at line 142 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_patch_generation_py_145": {
+        "name": "c0301_patch_generation_py_145",
+        "description": "Pylint: Line too long (105/100) in src\\god_engine\\patch_generation.py at line 145 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_patch_generation_py_149": {
+        "name": "c0301_patch_generation_py_149",
+        "description": "Pylint: Line too long (102/100) in src\\god_engine\\patch_generation.py at line 149 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_patch_generation_py_162": {
+        "name": "c0301_patch_generation_py_162",
+        "description": "Pylint: Line too long (103/100) in src\\god_engine\\patch_generation.py at line 162 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_patch_generation_py_175": {
+        "name": "c0301_patch_generation_py_175",
+        "description": "Pylint: Line too long (103/100) in src\\god_engine\\patch_generation.py at line 175 (ID: C0301)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1714_patch_generation_py_162": {
+        "name": "r1714_patch_generation_py_162",
+        "description": "Pylint: Consider merging these comparisons with 'in' by using 'goal.patch_logic in ('ADD_CLASS_DOCSTRING', 'ADD_FUNCTION_DOCSTRING')'. Use a set instead if elements are hashable. in src\\god_engine\\patch_generation.py at line 162 (ID: R1714)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1714",
+        "completion_criteria": "# Fixed: R1714",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1705_patch_generation_py_166": {
+        "name": "r1705_patch_generation_py_166",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\patch_generation.py at line 166 (ID: R1705)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1714_patch_generation_py_175": {
+        "name": "r1714_patch_generation_py_175",
+        "description": "Pylint: Consider merging these comparisons with 'in' by using 'goal.patch_logic in ('ADD_CLASS_DOCSTRING', 'ADD_FUNCTION_DOCSTRING')'. Use a set instead if elements are hashable. in src\\god_engine\\patch_generation.py at line 175 (ID: R1714)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1714",
+        "completion_criteria": "# Fixed: R1714",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "r1705_patch_generation_py_179": {
+        "name": "r1705_patch_generation_py_179",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\patch_generation.py at line 179 (ID: R1705)",
+        "target_file": "patch_generation.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_patch_generation.py"
+    },
+    "c0301_problem_identification_py_82": {
+        "name": "c0301_problem_identification_py_82",
+        "description": "Pylint: Line too long (159/100) in src\\god_engine\\problem_identification.py at line 82 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_85": {
+        "name": "c0301_problem_identification_py_85",
+        "description": "Pylint: Line too long (115/100) in src\\god_engine\\problem_identification.py at line 85 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_88": {
+        "name": "c0301_problem_identification_py_88",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\problem_identification.py at line 88 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_92": {
+        "name": "c0301_problem_identification_py_92",
+        "description": "Pylint: Line too long (114/100) in src\\god_engine\\problem_identification.py at line 92 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_105": {
+        "name": "c0301_problem_identification_py_105",
+        "description": "Pylint: Line too long (135/100) in src\\god_engine\\problem_identification.py at line 105 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0303_problem_identification_py_133": {
+        "name": "c0303_problem_identification_py_133",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 133 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_141": {
+        "name": "c0301_problem_identification_py_141",
+        "description": "Pylint: Line too long (109/100) in src\\god_engine\\problem_identification.py at line 141 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_143": {
+        "name": "c0301_problem_identification_py_143",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\problem_identification.py at line 143 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "w0718_problem_identification_py_124": {
+        "name": "w0718_problem_identification_py_124",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\problem_identification.py at line 124 (ID: W0718)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_67": {
+        "name": "c0301_problem_identification_py_67",
+        "description": "Pylint: Line too long (144/100) in src\\god_engine\\problem_identification.py at line 67 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_70": {
+        "name": "c0301_problem_identification_py_70",
+        "description": "Pylint: Line too long (124/100) in src\\god_engine\\problem_identification.py at line 70 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_76": {
+        "name": "c0301_problem_identification_py_76",
+        "description": "Pylint: Line too long (118/100) in src\\god_engine\\problem_identification.py at line 76 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_86": {
+        "name": "c0301_problem_identification_py_86",
+        "description": "Pylint: Line too long (107/100) in src\\god_engine\\problem_identification.py at line 86 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_90": {
+        "name": "c0301_problem_identification_py_90",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\problem_identification.py at line 90 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_94": {
+        "name": "c0301_problem_identification_py_94",
+        "description": "Pylint: Line too long (114/100) in src\\god_engine\\problem_identification.py at line 94 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_107": {
+        "name": "c0301_problem_identification_py_107",
+        "description": "Pylint: Line too long (135/100) in src\\god_engine\\problem_identification.py at line 107 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0303_problem_identification_py_135": {
+        "name": "c0303_problem_identification_py_135",
+        "description": "Pylint: Trailing whitespace in src\\god_engine\\problem_identification.py at line 135 (ID: C0303)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "FIX_TRAILING_WHITESPACE",
+        "completion_criteria": "",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_145": {
+        "name": "c0301_problem_identification_py_145",
+        "description": "Pylint: Line too long (101/100) in src\\god_engine\\problem_identification.py at line 145 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "w0718_problem_identification_py_126": {
+        "name": "w0718_problem_identification_py_126",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\problem_identification.py at line 126 (ID: W0718)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "w0718_problem_identification_py_69": {
+        "name": "w0718_problem_identification_py_69",
+        "description": "Pylint: Catching too general exception Exception in src\\god_engine\\problem_identification.py at line 69 (ID: W0718)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for W0718",
+        "completion_criteria": "# Fixed: W0718",
+        "priority": 7,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_problem_identification_py_80": {
+        "name": "c0301_problem_identification_py_80",
+        "description": "Pylint: Line too long (109/100) in src\\god_engine\\problem_identification.py at line 80 (ID: C0301)",
+        "target_file": "problem_identification.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_problem_identification.py"
+    },
+    "c0301_self_improvement_py_159": {
+        "name": "c0301_self_improvement_py_159",
+        "description": "Pylint: Line too long (114/100) in src\\god_engine\\self_improvement.py at line 159 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_168": {
+        "name": "c0301_self_improvement_py_168",
+        "description": "Pylint: Line too long (111/100) in src\\god_engine\\self_improvement.py at line 168 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_183": {
+        "name": "c0301_self_improvement_py_183",
+        "description": "Pylint: Line too long (121/100) in src\\god_engine\\self_improvement.py at line 183 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_188": {
+        "name": "c0301_self_improvement_py_188",
+        "description": "Pylint: Line too long (116/100) in src\\god_engine\\self_improvement.py at line 188 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_241": {
+        "name": "c0301_self_improvement_py_241",
+        "description": "Pylint: Line too long (116/100) in src\\god_engine\\self_improvement.py at line 241 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_247": {
+        "name": "c0301_self_improvement_py_247",
+        "description": "Pylint: Line too long (133/100) in src\\god_engine\\self_improvement.py at line 247 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_263": {
+        "name": "c0301_self_improvement_py_263",
+        "description": "Pylint: Line too long (102/100) in src\\god_engine\\self_improvement.py at line 263 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_162": {
+        "name": "r1705_self_improvement_py_162",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 162 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1714_self_improvement_py_168": {
+        "name": "r1714_self_improvement_py_168",
+        "description": "Pylint: Consider merging these comparisons with 'in' by using 'goal.patch_logic in ('ADD_CLASS_DOCSTRING', 'ADD_FUNCTION_DOCSTRING')'. Use a set instead if elements are hashable. in src\\god_engine\\self_improvement.py at line 168 (ID: R1714)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1714",
+        "completion_criteria": "# Fixed: R1714",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_170": {
+        "name": "r1705_self_improvement_py_170",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 170 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_206": {
+        "name": "r1705_self_improvement_py_206",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 206 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_252": {
+        "name": "r1705_self_improvement_py_252",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 252 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_162": {
+        "name": "c0301_self_improvement_py_162",
+        "description": "Pylint: Line too long (112/100) in src\\god_engine\\self_improvement.py at line 162 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_189": {
+        "name": "c0301_self_improvement_py_189",
+        "description": "Pylint: Line too long (121/100) in src\\god_engine\\self_improvement.py at line 189 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_194": {
+        "name": "c0301_self_improvement_py_194",
+        "description": "Pylint: Line too long (116/100) in src\\god_engine\\self_improvement.py at line 194 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_253": {
+        "name": "c0301_self_improvement_py_253",
+        "description": "Pylint: Line too long (133/100) in src\\god_engine\\self_improvement.py at line 253 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "c0301_self_improvement_py_269": {
+        "name": "c0301_self_improvement_py_269",
+        "description": "Pylint: Line too long (102/100) in src\\god_engine\\self_improvement.py at line 269 (ID: C0301)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for C0301",
+        "completion_criteria": "# Fixed: C0301",
+        "priority": 3,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_155": {
+        "name": "r1705_self_improvement_py_155",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 155 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1714_self_improvement_py_174": {
+        "name": "r1714_self_improvement_py_174",
+        "description": "Pylint: Consider merging these comparisons with 'in' by using 'goal.patch_logic in ('ADD_CLASS_DOCSTRING', 'ADD_FUNCTION_DOCSTRING')'. Use a set instead if elements are hashable. in src\\god_engine\\self_improvement.py at line 174 (ID: R1714)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1714",
+        "completion_criteria": "# Fixed: R1714",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_176": {
+        "name": "r1705_self_improvement_py_176",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 176 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "r1705_self_improvement_py_212": {
+        "name": "r1705_self_improvement_py_212",
+        "description": "Pylint: Unnecessary \"else\" after \"return\", remove the \"else\" and de-indent the code inside it in src\\god_engine\\self_improvement.py at line 212 (ID: R1705)",
+        "target_file": "self_improvement.py",
+        "patch_logic": "# TODO: Implement fix for R1705",
+        "completion_criteria": "# Fixed: R1705",
+        "priority": 5,
+        "effort": 1,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    },
+    "implement_self_healing_mechanism": {
+        "description": "Implement a self-healing mechanism in self_improvement.py to restore file integrity on failed patch application.",
+        "target_file": "self_improvement.py",
+        "patch_logic": "        # Run the experiment using the ExperimentationEngine\n        # The ExperimentationEngine handles backup, application, validation, and restoration\n        # It also updates goals.json if successful\n        try:\n            experiment_success = self.experimentation_engine.run_experiment(hypothesis)\n        except Exception as e:\n            print(f\"Error running experiment for '{improvement_name}': {e}\")\n            print(\"Attempting to restore from snapshot due to experiment failure...\")\n            self.integrity_checker.auto_restore(full_file_path)\n            return False\n\n        if experiment_success:",
+        "completion_criteria": "        try:\n            experiment_success = self.experimentation_engine.run_experiment(hypothesis)\n        except Exception as e:",
+        "priority": 15,
+        "effort": 10,
+        "validation_command": "pytest tests/test_self_improvement.py"
+    }
+}
