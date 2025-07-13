@@ -57,6 +57,9 @@ class AstRefactorer(ast.NodeTransformer):
             args=node.args,
             body=body_to_extract,
             decorator_list=[],
+            returns=None,
+            type_comment=None,
+            type_params=[]
         )
         self.helper_methods.append(helper_method)
 

@@ -19,8 +19,10 @@ class ExperimentationEngine:
         """
         Runs an experiment to test a hypothesis.
         """
-        print(f"ExperimentationEngine: Running experiment for hypothesis: "
-              f"{hypothesis['name']}")
+        print(
+            "ExperimentationEngine: Running experiment for hypothesis: "
+            f"{hypothesis['name']}"
+        )
 
         original_file_path = hypothesis["target_file"]
         patch_content = hypothesis["patch_logic"]
@@ -34,11 +36,15 @@ class ExperimentationEngine:
                 original_content = f_orig.read()
             with open(backup_file_path, 'w', encoding='utf-8') as f_bak:
                 f_bak.write(original_content)
-            print(f"ExperimentationEngine: Backed up {original_file_path} to "
-                  f"{backup_file_path}")
+            print(
+                f"ExperimentationEngine: Backed up {original_file_path} to "
+                f"{backup_file_path}"
+            )
         else:
-            print(f"ExperimentationEngine: Warning: Target file {original_file_path} "
-                  f"does not exist. Creating it.")
+            print(
+                f"ExperimentationEngine: Warning: Target file {original_file_path} "
+                "does not exist. Creating it."
+            )
             # No original content to backup
             original_content = ""
 
@@ -47,54 +53,75 @@ class ExperimentationEngine:
             # Apply the patch (for now, simple overwrite/append)
             # This needs to be more sophisticated for real patching (e.g., diff/patch)
             # For the current Pylint fixes, patch_logic is often the corrected content
-            print(f"ExperimentationEngine: Applying patch to {original_file_path}")
+            print(
+                "ExperimentationEngine: Applying patch to "
+                f"{original_file_path}"
+            )
             with open(original_file_path, 'w', encoding='utf-8') as f_target:
                 f_target.write(patch_content)
 
             # Run validation command (e.g., pytest)
-            print(f"ExperimentationEngine: Running validation command: {validation_command}")
-            result = subprocess.run(
+            print(
+                "ExperimentationEngine: Running validation command: "
+                f"{validation_command}"
+            )
+            subprocess.run(
                 validation_command,
                 shell=True,
                 capture_output=True,
                 text=True,
-                # Run tests from the project root
+                check=True,  # Raises CalledProcessError on non-zero return code
                 cwd=self.code_root
             )
-            print(f"Validation Output:\n{result.stdout}")
-            if result.stderr:
-                print(f"Validation Errors:\n{result.stderr}")
 
-            if result.returncode == 0:
-                print(f"ExperimentationEngine: Validation successful for "
-                      f"'{hypothesis['name']}'.")
-                success = True
-            else:
-                print(f"ExperimentationEngine: Validation failed for "
-                      f"'{hypothesis['name']}'.")
+            # This part only runs if validation is successful
+            print(
+                "ExperimentationEngine: Validation successful for "
+                f"'{hypothesis['name']}'."
+            )
+            success = True
+            performance_gain = "N/A"  # Placeholder
+            print(
+                "ExperimentationEngine: Hypothesis "
+                f"'{hypothesis['name']}' was successful."
+            )
+            self.generate_goal_from_hypothesis(hypothesis, performance_gain)
 
-            # Placeholder for actual performance measurement
-            performance_gain = "N/A"
-
-            if success:
-                print(f"ExperimentationEngine: Hypothesis '{hypothesis['name']}' "
-                      f"was successful.")
-                self.generate_goal_from_hypothesis(hypothesis, performance_gain)
-            else:
-                print(f"ExperimentationEngine: Hypothesis '{hypothesis['name']}' failed.")
-            return success
-        except Exception as e:
-            print(f"ExperimentationEngine: An error occurred during experiment: {e}")
-            return False
+        except subprocess.CalledProcessError as e:
+            # This part runs if validation fails
+            print(
+                "ExperimentationEngine: Validation failed for "
+                f"'{hypothesis['name']}'."
+            )
+            print(f"Validation Output:\n{e.stdout}")
+            if e.stderr:
+                print(f"Validation Errors:\n{e.stderr}")
+            print(f"ExperimentationEngine: Hypothesis '{hypothesis['name']}' failed.")
+            success = False  # It's already false, but for clarity
+        except IOError as e:
+            print(
+                "ExperimentationEngine: A file error occurred during "
+                f"experiment: {e}"
+            )
+            success = False
         finally:
             # Revert changes by restoring the backup
             if os.path.exists(backup_file_path):
-                print(f"ExperimentationEngine: Restoring original file from "
-                      f"{backup_file_path}")
+                print(
+                    "ExperimentationEngine: Restoring original file from "
+                    f"{backup_file_path}"
+                )
                 os.replace(backup_file_path, original_file_path)
-            # If original file didn't exist and experiment failed, delete the created file
-            elif not success and os.path.exists(original_file_path) and original_content == "":
+            # If original file didn't exist and experiment failed,
+            # delete the created file
+            elif (
+                not success and
+                os.path.exists(original_file_path) and
+                original_content == ""
+            ):
                 os.remove(original_file_path)
+
+        return success
 
     def generate_goal_from_hypothesis(self, hypothesis, performance_gain):
         """
@@ -116,7 +143,10 @@ class ExperimentationEngine:
             }
         }
 
-        print(f"ExperimentationEngine: Generating new goal: {hypothesis['name']}")
+        print(
+            "ExperimentationEngine: Generating new goal: "
+            f"{hypothesis['name']}"
+        )
         with open(self.goals_config_path, "r+", encoding="utf-8") as f:
             goals = json.load(f)
             if hypothesis["name"] not in goals:
@@ -124,7 +154,12 @@ class ExperimentationEngine:
                 f.seek(0)
                 json.dump(goals, f, indent=4)
                 f.truncate()
-                print(f"ExperimentationEngine: Successfully added new goal "
-                      f"'{hypothesis['name']}'.")
+                print(
+                    "ExperimentationEngine: Successfully added new goal "
+                    f"'{hypothesis['name']}'."
+                )
             else:
-                print(f"ExperimentationEngine: Goal '{hypothesis['name']}' already exists.")
+                print(
+                    f"ExperimentationEngine: Goal '{hypothesis['name']}' "
+                    "already exists."
+                )

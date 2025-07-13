@@ -1,14 +1,8 @@
 # self_improvement.py
-import os
 import subprocess
 from pathlib import Path
-
-try:
-    from google.cloud import aiplatform as vertex_ai
-except ImportError:
-    vertex_ai = None
-
-from vertexai.preview.generative_models import GenerativeModel
+import os
+from google import genai
 
 from god_engine.goal_manager import GoalManager
 from god_engine.problem_identification import generate_goals_from_todos
@@ -30,35 +24,40 @@ class SelfImprovementModule:
         # Bootstrap any new TODOs as goals by analyzing the codebase
         new_goals = generate_goals_from_todos(str(self.code_dir))
         for goal_data in new_goals:
-            if not any(g.id == goal_data["id"] for g in self.goals.goals):
+            if not any(g.goal_id == goal_data["id"] for g in self.goals.goals):
                 self.goals.add_goal_from_dict(goal_data)
-        
+
         # Gemini client setup
-        if vertex_ai:
-            vertex_ai.init(api_key=os.getenv("GEMINI_API_KEY"))
-            self.model = GenerativeModel("gemini-1.5-pro")
-        else:
-            self.model = None
+        try:
+            self.client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        except (ValueError, TypeError, KeyError) as e:
+            print(f"Error configuring Gemini: {e}")
+            self.client = None
         # Memory of applied goals
         self.memory = (
-            set(self.mem_file.read_text().splitlines())
+            set(self.mem_file.read_text(encoding="utf-8").splitlines())
             if self.mem_file.exists()
             else set()
         )
 
-    def _save_memory(self):
-        self.mem_file.write_text("\n".join(self.memory))
+    def save_memory(self):
+        self.mem_file.write_text("\n".join(self.memory), encoding="utf-8")
 
-    def _call_gemini(self, prompt: str) -> str:
+    def call_gemini(self, prompt: str) -> str:
         """
         Send a feature-driven request to Gemini and return the unified-diff patch.
         """
-        if not self.model:
+        if not self.client:
             return ""
-        # Ensure your GEMINI_API_KEY is set in the env
-        response = self.model.generate_content(prompt)
+        # Ensure your GEMINI_API_KEY is.
+        response = self.client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt
+        )
         # Gemini returns a list of predictions; we expect one unified diff
         content = response.text
+        if content is None:
+            return ""
         # Some trimming/hygiene: ensure it starts with diff header
         if not content.startswith("diff") and "+++" in content:
             # try to locate first '+++'
@@ -67,45 +66,65 @@ class SelfImprovementModule:
         return content
 
     def improve(self):
-        for _ in range(self.max_cycles):
+        """
+        Main loop for the self-improvement process.
+        """
+        print("Starting self-improvement cycle...")
+        for i in range(self.max_cycles):
+            print(f"\n--- Cycle {i + 1}/{self.max_cycles} ---")
             goal = self.goals.next_goal()
             if not goal:
-                break  # no more pending goals
+                print("No more pending goals. Exiting.")
+                break
 
-            # Skip if already attempted
-            if goal.id in self.memory:
+            print(f"Selected goal: {goal.goal_id} - {goal.description}")
+
+            if goal.goal_id in self.memory:
+                print("Goal already attempted. Skipping.")
                 continue
 
-            # Build prompt: describe codebase + ask for patch
             prompt = (
-                f"# Goal ID: {goal.id}\n"
+                f"# Goal ID: {goal.goal_id}\n"
                 f"# Description: {goal.description}\n"
-                "Generate a unified-diff patch to implement this capability, "
-                "prioritizing autonomy and resilience.\n"
+                "Generate a unified-diff patch to implement this "
+                "capability, prioritizing autonomy and resilience.\n"
                 f"# Base path: {self.code_dir}\n"
             )
-            patch = self._call_gemini(prompt)
+            print("Generating patch with Gemini...")
+            patch = self.call_gemini(prompt)
 
-            # Attempt to apply & test
-            applied = self._apply_patch(patch)
-            if applied and self._run_tests():
-                self.goals.mark_done(goal.id)
+            if not patch:
+                print("Gemini returned no patch. Skipping goal.")
+                self.memory.add(goal.goal_id)
+                continue
+
+            print(f"Applying patch:\n{patch}")
+            applied = self.apply_patch(patch)
+            if applied:
+                print("Patch applied successfully. Running tests...")
+                if self.run_tests():
+                    print("Tests passed. Marking goal as done.")
+                    self.goals.mark_done(goal.goal_id)
+                else:
+                    print("Tests failed. Reverting patch.")
+                    self.git_reset_all()
             else:
-                # revert if tests fail
-                self._git_reset_all()
-            self.memory.add(goal.id)
+                print("Failed to apply patch.")
 
-        self._save_memory()
+            self.memory.add(goal.goal_id)
+
+        print("\nSelf-improvement cycle finished.")
+        self.save_memory()
         self.goals.save()
 
-    def _apply_patch(self, patch_text: str) -> bool:
+    def apply_patch(self, patch_text: str) -> bool:
         """Applies a patch to the codebase."""
         if not patch_text:
             return False
         try:
-            # Create a temporary patch file in the current working directory (project root)
+            # Create a temporary patch file in the current working directory (root)
             patch_file_path = Path("./temp.patch")
-            patch_file_path.write_text(patch_text)
+            patch_file_path.write_text(patch_text, encoding="utf-8")
 
             # Apply the patch using git from the project root
             subprocess.run(
@@ -122,7 +141,7 @@ class SelfImprovementModule:
                 print(e.stderr.decode())
             return False
 
-    def _run_tests(self) -> bool:
+    def run_tests(self) -> bool:
         """Runs the test suite."""
         try:
             subprocess.run(
@@ -134,7 +153,7 @@ class SelfImprovementModule:
             print(e.stderr.decode())
             return False
 
-    def _git_reset_all(self):
+    def git_reset_all(self):
         """Resets all changes in the git repository."""
         try:
             subprocess.run(

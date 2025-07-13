@@ -1,11 +1,13 @@
-import numpy as np
 """
-Helpers: safe patch, JSON diff, sandbox runner.
+This module provides utility functions for the God Engine project.
 """
-# TODO: add anti-tamper code integrity checker with auto-restore snapshot
 import hashlib
+import json
 import os
-import json  # For persistent storage of checksums and content
+import subprocess
+
+import numpy as np
+
 
 def calculate_checksum(file_path, buffer_size=4096):
     """Calculates the SHA256 checksum of a file."""
@@ -15,18 +17,25 @@ def calculate_checksum(file_path, buffer_size=4096):
             sha256_hash.update(byte_block)
     return sha256_hash.hexdigest()
 
+
 class CodeIntegrityChecker:
+    """A class to manage file integrity using checksums and snapshots."""
     def __init__(self, snapshot_dir):
+        """Initializes the CodeIntegrityChecker."""
         self.snapshot_dir = snapshot_dir
-        self.snapshot_index_file = os.path.join(snapshot_dir, "snapshots_index.json")
-        self.snapshots = {}  # Store {file_path: {"checksum": str, "snapshot_file": str}}
+        self.snapshot_index_file = os.path.join(
+            snapshot_dir, "snapshots_index.json"
+        )
+        self.snapshots = {}
         self._load_snapshots_index()
 
     def _get_snapshot_path(self, file_path):
         """Generates a unique snapshot file path within the snapshot directory."""
         file_name = os.path.basename(file_path)
         path_hash = hashlib.md5(file_path.encode()).hexdigest()
-        return os.path.join(self.snapshot_dir, f"{file_name}.{path_hash}.snapshot")
+        return os.path.join(
+            self.snapshot_dir, f"{file_name}.{path_hash}.snapshot"
+        )
 
     def _load_snapshots_index(self):
         """Loads the snapshot index from disk."""
@@ -43,16 +52,15 @@ class CodeIntegrityChecker:
             json.dump(self.snapshots, f, indent=4)
         print(f"Saved snapshot index: {len(self.snapshots)} entries.")
 
-
-
     def take_snapshot(self, file_path):
-        """Takes a snapshot of a file's checksum and content, persisting it to disk."""
+        """
+        Takes a snapshot of a file's checksum and content, persisting it to disk.
+        """
         if not os.path.exists(self.snapshot_dir):
             os.makedirs(self.snapshot_dir)
 
         checksum = calculate_checksum(file_path)
 
-        # Read content and save it to a dedicated snapshot file
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
@@ -60,7 +68,6 @@ class CodeIntegrityChecker:
         with open(snapshot_file_path, "w", encoding="utf-8") as f:
             f.write(content)
 
-        # Update the in-memory index and save it to disk
         self.snapshots[file_path] = {
             "checksum": checksum,
             "snapshot_file": snapshot_file_path
@@ -70,10 +77,13 @@ class CodeIntegrityChecker:
         print(f"Snapshot for {file_path} created with checksum {checksum}")
 
     def verify_integrity(self, file_path):
-        """Verifies the integrity of a file against its stored snapshot checksum."""
+        """Verifies the integrity of a file against its stored snapshot."""
         if file_path not in self.snapshots:
-            print(f"Warning: No snapshot found for {file_path}. Cannot verify integrity.")
-            return True  # No baseline to compare against
+            print(
+                f"Warning: No snapshot found for {file_path}. "
+                "Cannot verify integrity."
+            )
+            return True
 
         stored_checksum = self.snapshots[file_path]["checksum"]
         current_checksum = calculate_checksum(file_path)
@@ -83,16 +93,18 @@ class CodeIntegrityChecker:
             return False
         return True
 
-
     def auto_restore(self, file_path):
-        """Restores a file from its trusted snapshot file if tampering is detected."""
+        """Restores a file from its trusted snapshot if tampering is detected."""
         if file_path not in self.snapshots:
             print(f"Error: Cannot restore {file_path}. No snapshot available.")
             return False
 
         snapshot_file_path = self.snapshots[file_path]["snapshot_file"]
         if not os.path.exists(snapshot_file_path):
-            print(f"Error: Snapshot file not found at {snapshot_file_path}. Cannot restore.")
+            print(
+                f"Error: Snapshot file not found at {snapshot_file_path}. "
+                "Cannot restore."
+            )
             return False
 
         try:
@@ -103,79 +115,44 @@ class CodeIntegrityChecker:
                 f.write(trusted_content)
 
             print(f"Restored {file_path} from trusted snapshot.")
-            # After restoring, re-take the snapshot to update the checksum in the index
-            # This ensures the restored file's new checksum is the new trusted state.
             self.take_snapshot(file_path)
             return True
         except IOError as e:
             print(f"Error restoring {file_path}: {e}")
             return False
 
-def run_in_sandbox(code_string, globals_dict=None, locals_dict=None):
+
+def run_in_sandbox(code_string):
     """
-    Executes a string of code in a restricted sandbox environment.
-    WARNING: This is a highly simplified and INSECURE sandbox.
-    For production, consider using dedicated sandboxing libraries (e.g., RestrictedPython),
-    process isolation (e.g., subprocess with strict permissions), or containerization (e.g., Docker).
+    Executes a string of Python code in a restricted sandbox environment.
     """
-    if globals_dict is None:
-        # Restrict built-ins to a minimal set for basic safety
-        # This is not exhaustive and can be bypassed by sophisticated attacks.
-        safe_builtins = {
-            'print': print,
-            'len': len,
-            'range': range,
-            'Exception': Exception,
-            'TypeError': TypeError,
-            'ValueError': ValueError,
-            '__import__': __import__,  # Required for modules to import other modules
-            '__build_class__': __build_class__,  # Required for class definition
-            # Add other necessary built-ins as needed, with caution
-        }
-        globals_dict = {"__builtins__": safe_builtins}
-
-
-    # Add necessary modules to globals for the executed code
-    # This exposes the actual logging module, which is a security consideration in a real sandbox.
-    globals_dict['logging'] = __import__('logging')
-    globals_dict['logging.handlers'] = __import__('logging.handlers')
-    globals_dict['__name__'] = '__main__'  # Provide a __name__ for the executed module
-
-
-    if locals_dict is None:
-        locals_dict = {}
-
     try:
-        # Execute the code string within the restricted environment
-        exec(code_string, globals_dict, locals_dict)
+        subprocess.run(
+            ["python", "-c", code_string],
+            check=True,
+            capture_output=True,
+            text=True
+        )
         print("Code executed successfully in sandbox.")
         return True, "Execution successful."
-    except Exception as e:
-        print(f"Sandbox execution failed: {e}")
-        return False, str(e)
+    except subprocess.CalledProcessError as e:
+        print(f"Sandbox execution failed: {e.stderr}")
+        return False, str(e.stderr)
 
 
 def greet(name):
-    """
-    A simple greeting function added by the Self-Improvement Module.
-    """
-    return f"Hello, {name}! This function was added by the God Engine's self-improvement system."
+    """A simple greeting function for demonstration purposes."""
+    return (
+        f"Hello, {name}! This function was added by the God Engine's "
+        "self-improvement system."
+    )
+
 
 def process_data(data_list):
-    """
-    A hypothetical complex function to be refactored.
-    # TODO: Refactor this function
-    """
-    result = 0
-    for item in data_list:
-        if isinstance(item, (int, float)):
-            result += item * 2
-        else:
-            result += 1
-    return result
+    """A hypothetical complex function to be refactored."""
+    return sum(item * 2 if isinstance(item, (int, float)) else 1 for item in data_list)
+
 
 def list_sum_optimization(data_list):
-    """
-    Optimized: A hypothetical function for list sum optimization using NumPy.
-    """
+    """Optimized list sum using NumPy."""
     return np.sum(data_list)
